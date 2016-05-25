@@ -16,6 +16,9 @@ import React from 'react'
 import { render } from 'react-dom'
 import sortBy from 'sort-by'
 
+//TODO TWO ERRORS
+//warning.js:45 Warning: Each child in an array or iterator should have a unique "key" prop.
+//ReactDOMSelect.js:183 Uncaught TypeError: Cannot set property 'pendingUpdate' of null
 const DATA = {
   title: 'Menu',
   items: [
@@ -29,13 +32,59 @@ const DATA = {
 }
 
 function Menu() {
+  const items = DATA.items.
+    filter((item) => item.type == 'mexican').
+    sort(sortBy('name')).
+    map((item) => <li>{item.name}</li>)
+
   return (
     <div>
+      <h1>{DATA.title}</h1>
       Open the console, you have failing tests.
+      <DropDown />
+      <ul>
+        {items}
+      </ul>
     </div>
   )
 }
 
-render(<Menu/>, document.getElementById('app'), () => {
+function updateThePage(type) {
+  const items = DATA.items.
+    filter((item) => item.type == type).
+    sort(sortBy('name')).
+    map((item) => <li>{item.name}</li>)
+
+  render ((
+    <div>
+      <h1>{DATA.title}</h1>
+      Open the console, you have failing tests.
+      <DropDown />
+      <ul>
+        {items}
+      </ul>
+    </div>
+  ), document.getElementById('app'))
+}
+
+function dropDownHandler(event) {
+  console.log('dropDownHandler')
+  updateThePage(event.target.value)
+}
+
+function DropDown() {
+  const types = DATA.items.map(item => <option value={item.type}>{item.type}</option>)
+
+  return (
+    <div>
+    Please Select Type
+    <select onChange={dropDownHandler}>
+      {types}
+    </select>
+    </div>
+  )
+}
+
+render(<Menu />, document.getElementById('app'), () => {
   require('./tests').run()
 })
