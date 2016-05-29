@@ -35,6 +35,11 @@ styles.panel = {
 }
 
 const Tab = React.createClass({
+  propTypes: {
+    tabIndex: React.PropTypes.number.isRequired,
+    onActive: React.PropTypes.func
+  },
+
   handleClick() {
     if(this.props.onActive)
       this.props.onActive(this.props.tabIndex)
@@ -57,6 +62,10 @@ const Tab = React.createClass({
 })
 
 const Tabs = React.createClass({
+  propTypes: {
+    data: React.PropTypes.array.isRequired
+  },
+
   getInitialState() {
     return {
       activeTabIndex: 0
