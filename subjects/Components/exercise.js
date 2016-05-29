@@ -34,21 +34,60 @@ styles.panel = {
   padding: 10
 }
 
-const Tabs = React.createClass({
+const Tab = React.createClass({
+  handleClick() {
+    if(this.props.onActive)
+      this.props.onActive(this.props.tabIndex)
+  },
+
+  tabStyle() {
+    if(this.props.isActive)
+      return styles.activeTab
+    else
+      return styles.tab
+  },
+
   render() {
     return (
+      <div className="Tab" style={this.tabStyle()} onClick={this.handleClick}>
+      Active
+      </div>
+    )
+  }
+})
+
+const Tabs = React.createClass({
+  getInitialState() {
+    return {
+      activeTabIndex: 0
+    }
+  },
+
+  handleActive(activeTabIndex) {
+    console.log('On Active')
+    this.setState({activeTabIndex: activeTabIndex})
+  },
+
+  renderTabs() {
+    const countries = this.props.data.map(country => <li>{country.name}</li>)
+    const tabs = this.props.data.map((country, index) => {
+      return <Tab onActive={tabIndex => this.handleActive(tabIndex)} tabIndex={index} isActive={this.state.activeTabIndex == index} />
+    })
+
+    return (
       <div className="Tabs">
-        <div className="Tab" style={styles.activeTab}>
-          Active
-        </div>
-        <div className="Tab" style={styles.tab}>
-          Inactive
-        </div>
         <div className="TabPanel" style={styles.panel}>
-          Panel
+          {tabs}
+          <ul>
+            {countries}
+          </ul>
         </div>
       </div>
     )
+  },
+
+  render() {
+    return this.renderTabs()
   }
 })
 
