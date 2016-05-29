@@ -55,7 +55,7 @@ const Tab = React.createClass({
   render() {
     return (
       <div className="Tab" style={this.tabStyle()} onClick={this.handleClick}>
-      Active
+        {this.props.country.name}
       </div>
     )
   }
@@ -78,19 +78,24 @@ const Tabs = React.createClass({
   },
 
   renderTabs() {
-    const countries = this.props.data.map(country => <li>{country.name}</li>)
+    const tabContent = this.props.data[this.state.activeTabIndex].description
     const tabs = this.props.data.map((country, index) => {
-      return <Tab onActive={tabIndex => this.handleActive(tabIndex)} tabIndex={index} isActive={this.state.activeTabIndex == index} />
+      return (
+        <Tab
+          onActive={tabIndex => this.handleActive(tabIndex)}
+          tabIndex={index}
+          isActive={this.state.activeTabIndex == index}
+          country={country}
+        />
+      )
     })
 
     return (
       <div className="Tabs">
         <div className="TabPanel" style={styles.panel}>
           {tabs}
-          <ul>
-            {countries}
-          </ul>
         </div>
+        {tabContent}
       </div>
     )
   },
